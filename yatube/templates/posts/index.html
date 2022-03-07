@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load thumbnail %}
+{% load cache %}
+{% block title %}Последние обновления на сайте{% endblock %}
+{% block content %}
+
+{% cache 20 index_page %}
+  {% for post in page_obj %}
+  <ul>
+    <li>
+      Автор: {{ post.author.get_full_name }}
+    </li>
+    <li>
+      Дата публикации: {{ post.pub_date|date:"d E Y" }}
+    </li>
+  </ul>
+  {% thumbnail post.image "960x339" crop="center" upscale=True as im %}
+  <img class="card-img my-2" src="{{ im.url }}">
+  {% endthumbnail %}
+  <p>{{ post.text }}</p>
+  {% if post.group %}
+  <li>    
+  <a href="{% url 'posts:group_list' post.group.slug %}">все записи группы</a>
+  </li>
+  </li>
+   <a href="{% url 'posts:profile' post.author %}">все посты пользователя</a>
+  </ul>
+  {% endif %}
+  {% endfor %}
+  {% include 'posts/includes/paginator.html' %}
+  {% endcache %}
+{% endblock %} 
