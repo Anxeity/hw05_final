@@ -95,7 +95,7 @@ class FormCreateTest(TestCase):
         form_data = {
             'text': 'Тестовый комментарий',
         }
-        response = self.authorized_client.post(
+        self.authorized_client.post(
             reverse('posts:add_comment', kwargs={'post_id': self.post.id}),
             data=form_data,
             follow=True,
