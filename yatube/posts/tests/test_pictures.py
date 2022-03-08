@@ -1,16 +1,12 @@
-import shutil
 import tempfile
 
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django import forms
 from django.contrib.auth import get_user_model
 from django.conf import settings
 from django.test import TestCase, Client, override_settings
 from django.urls import reverse
-from django.core.cache import cache
 
 
-from .. import views
 from ..models import Group, Post
 
 
