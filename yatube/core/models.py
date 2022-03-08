@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class CreatedModel(models.Model):
     created = models.DateTimeField(
         'Дата создания',
@@ -8,4 +9,4 @@ class CreatedModel(models.Model):
 
     class Meta:
         # Это абстрактная модель:
-        abstract = True 
+        abstract = True

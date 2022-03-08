@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
 from django import forms
-from ..models import Post, Group
+from ..models import Post, Group, Follow
 
 
 User = get_user_model()
@@ -13,6 +13,7 @@ class PostViewsTests(TestCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.user = User.objects.create_user(username='HasNoName')
+        cls.user2 = User.objects.create_user(username='HasName')
         cls.authorized_client = Client()
         cls.authorized_client.force_login(PostViewsTests.user)
         cls.guest_client = Client()
@@ -30,9 +31,12 @@ class PostViewsTests(TestCase):
             text='Тестовый пост',
             group=self.group
         )
+
         self.user = User.objects.create_user(username='StasBasov')
         self.authorized_client = Client()
         self.authorized_client.force_login(PostViewsTests.user)
+        self.authorized_client2 = Client()
+        self.authorized_client2.force_login(PostViewsTests.user)
 
     def test_pages_uses_correct_template(self):
         """URL-адрес использует соответствующий шаблон."""
@@ -140,14 +144,14 @@ class PostViewsTests(TestCase):
         self.assertIn(post, posts)
 
     def test_cache_index(self):
-       response = self.authorized_client.get(
+        response = self.authorized_client.get(
             reverse('posts:index')
         )
-       resp_1 = response.content
-       post_deleted = Post.objects.get(id=1)
-       post_deleted.delete()
-       response_anoth = self.authorized_client.get(
+        resp_1 = response.content
+        post_deleted = Post.objects.get(id=1)
+        post_deleted.delete()
+        response_anoth = self.authorized_client.get(
             reverse('posts:index')
         )
-       resp_2 = response_anoth.content
-       self.assertTrue(resp_1 == resp_2)
+        resp_2 = response_anoth.content
+        self.assertTrue(resp_1 == resp_2)

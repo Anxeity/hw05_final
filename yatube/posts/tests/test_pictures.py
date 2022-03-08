@@ -56,6 +56,6 @@ class TaskPagesTests(TestCase):
     def test_post_detail_pic(self):
         response = self.guest_client.get(
             reverse('posts:post_detail', kwargs={"post_id": self.post.id})
-            )
+        )
         obj = response.context['post']
         self.assertEqual(obj.image, self.post.image)

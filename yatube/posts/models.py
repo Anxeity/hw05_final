@@ -52,6 +52,7 @@ class Post(CreatedModel):
     def __str__(self) -> str:
         return self.text[:15]
 
+
 class Comment(models.Model):
     text = models.TextField()
     post = models.ForeignKey(
@@ -61,7 +62,24 @@ class Comment(models.Model):
     )
     author = models.ForeignKey(
         User,
-         verbose_name="comments", 
-         on_delete=models.CASCADE
+        verbose_name="comments",
+        on_delete=models.CASCADE
     )
     created = models.DateTimeField(auto_now_add=True)
+
+
+class Follow(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+        related_name='follower'
+    )
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+        related_name='following'
+    )
