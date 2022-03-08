@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load thumbnail %}
+{% block title %}
+{{group.title}}
+{% endblock %}}
+{% block content %}
+<h1>{{ group.title }}</h1>
+<p> {{ group.description }}</p>
+{% for post in page_obj %}
+  <ul>
+    <li>
+      Автор: {{ post.author.get_full_name }}
+    </li>
+    <li>
+      Дата публикации: {{ post.pub_date|date:"d E Y" }}
+  {% thumbnail post.image "960x339" crop="center" upscale=True as im %}
+  <img class="card-img my-2" src="{{ im.url }}">
+  {% endthumbnail %}
+  <p>{{ post.text }}</p>  
+{% if not forloop.last %} <hr>{% endif %}
+{% endfor %}
+{% include 'posts/includes/paginator.html' %}
+{% endblock %}  
+    
