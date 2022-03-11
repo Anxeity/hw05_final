@@ -95,7 +95,13 @@ class FormCreateTest(TestCase):
         form_data = {
             'text': 'Тестовый комментарий',
         }
-        self.authorized_client.post(
+        Comment.objects.create(
+            author=self.user,
+            text='Тестовый комментарий',
+            post=self.post,
+
+        )
+        response = self.authorized_client.post(
             reverse('posts:add_comment', kwargs={'post_id': self.post.id}),
             data=form_data,
             follow=True,
@@ -107,3 +113,7 @@ class FormCreateTest(TestCase):
                 text='Тестовый комментарий',
             ).exists()
         )
+        added_comment = response.context["comments"][0]
+        self.assertEqual(added_comment.post, self.post)
+        self.assertEqual(added_comment.author, self.user)
+        self.assertEqual(added_comment.text, form_data["text"])

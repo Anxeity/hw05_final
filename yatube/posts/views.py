@@ -80,18 +80,16 @@ def post_detail(request, post_id):
 # Создание записи
 @login_required
 def post_create(request):
-    if request.method == 'POST':
-        form = PostForm(
-            request.POST,
-            files=request.FILES or None,
-        )
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.save()
-            return redirect('posts:profile', username=request.user)
-    else:
-        form = PostForm()
+    request.method == 'POST'
+    form = PostForm(
+        request.POST,
+        files=request.FILES or None,
+    )
+    if form.is_valid():
+        post = form.save(commit=False)
+        post.author = request.user
+        post.save()
+        return redirect('posts:profile', username=request.user)
     return render(request, 'posts/create_post.html', {'form': form})
 
 
@@ -177,5 +175,5 @@ def profile_follow(request, username):
 @login_required
 def profile_unfollow(request, username):
     author = get_object_or_404(User, username=username)
-    Follow.objects.get(user=request.user, author=author).delete()
+    Follow.objects.filter(user=request.user, author=author).delete()
     return redirect('posts:profile', username=username)

@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
 from django import forms
-from ..models import Post, Group
+from ..models import Post, Group, Comment
 
 
 User = get_user_model()
@@ -26,10 +26,17 @@ class PostViewsTests(TestCase):
             description='Описание тестовой группы',
         )
 
+        self.user = User.objects.get(username='HasNoName')
+
         self.post = Post.objects.create(
             author=self.user,
             text='Тестовый пост',
-            group=self.group
+            group=self.group,
+        )
+        self.comment = Comment.objects.create(
+            post=self.post,
+            text='Тестовый комментарий',
+            author=self.user,
         )
 
         self.user = User.objects.create_user(username='StasBasov')

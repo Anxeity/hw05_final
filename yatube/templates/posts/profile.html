@@ -2,7 +2,7 @@
 {% load static %}
 {% load thumbnail %}
 {% block title %}
-Профайл пользователя {{author.get_full_name}
+Профайл пользователя {{author.get_full_name}}
 {% endblock %} 
 
 {% block content %}
@@ -17,12 +17,14 @@
       Отписаться
     </a>
   {% else %}
+    {% if user.username != post.author %}
       <a
         class="btn btn-lg btn-primary"
         href="{% url 'posts:profile_follow' author.username %}" role="button"
       >
         Подписаться
       </a>
+      {% endif %}
    {% endif %}
         {% for post in page_obj %}   
         <article>

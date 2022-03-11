@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import UniqueConstraint
 from django.contrib.auth import get_user_model
 from core.models import CreatedModel
 
@@ -82,4 +83,8 @@ class Follow(models.Model):
         null=False,
         blank=False,
         related_name='following'
+    )
+    UniqueConstraint(
+        fields=['user', 'author'],
+        name='unique_follow'
     )

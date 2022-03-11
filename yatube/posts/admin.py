@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Group, Post
+from .models import Group, Post, Follow, Comment
 # Registration of PostAdmin and GroupAdmin models.
 
 
@@ -16,5 +16,17 @@ class GroupAdmin(admin.ModelAdmin):
     search_fields = ('title',)
 
 
+class FollowAdmin(admin.ModelAdmin):
+    list_display = ('user', 'author', )
+    search_fields = ('user',)
+
+
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('text', 'post', 'author', )
+    search_fields = ('text',)
+
+
 admin.site.register(Post, PostAdmin)
 admin.site.register(Group, GroupAdmin)
+admin.site.register(Follow, FollowAdmin)
+admin.site.register(Comment, CommentAdmin)
